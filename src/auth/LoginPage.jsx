@@ -1,0 +1,103 @@
+import { useState } from 'react'
+import { Navigate, useNavigate, useSearchParams } from 'react-router-dom'
+import { useAuth } from './AuthContext'
+import { portal } from '../data/config'
+
+export default function LoginPage() {
+  const { user, checking, signIn } = useAuth()
+  const navigate = useNavigate()
+  const [params] = useSearchParams()
+
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+  const [error, setError] = useState(null)
+  const [busy, setBusy] = useState(false)
+
+  const next = params.get('next') || '/'
+
+  if (checking) {
+    return (
+      <div className="boot-screen" role="status" aria-live="polite">
+        <span className="spinner" />
+        <span className="sr-only">Checking your {portal.identity.name} session</span>
+      </div>
+    )
+  }
+  if (user) return <Navigate to={next} replace />
+
+  const onSubmit = async (e) => {
+    e.preventDefault()
+    setError(null)
+    setBusy(true)
+    const result = await signIn(username, password)
+    setBusy(false)
+    if (result.ok) navigate(next, { replace: true })
+    else setError(result.error)
+  }
+
+  return (
+    <main className="login">
+      <div className="login-visual" style={{ backgroundImage: `url(${portal.hero})` }}>
+        <div className="login-visual__scrim" />
+        <div className="contours" aria-hidden="true" />
+        <div className="login-visual__brand">
+          <p className="login-visual__title">{portal.name}</p>
+        </div>
+      </div>
+
+      <div className="login-panel">
+        <form className="login-card" onSubmit={onSubmit} noValidate>
+          <h1 className="login-card__title">Sign in</h1>
+
+          <div className="field">
+            <label htmlFor="username">Username</label>
+            <input
+              id="username"
+              name="username"
+              type="text"
+              autoComplete="username"
+              autoCapitalize="none"
+              spellCheck="false"
+              /* eslint-disable-next-line jsx-a11y/no-autofocus */
+              autoFocus
+              disabled={busy}
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
+          </div>
+
+          <div className="field">
+            <label htmlFor="password">Password</label>
+            <input
+              id="password"
+              name="password"
+              type="password"
+              autoComplete="current-password"
+              disabled={busy}
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
+
+          {error && (
+            <p className="login-card__error" role="alert">
+              {error}
+            </p>
+          )}
+
+          <button type="submit" className="btn-primary" disabled={busy}>
+            {busy ? (
+              <>
+                <span className="btn-spinner" aria-hidden="true" />
+                <span>Signing in</span>
+              </>
+            ) : (
+              <span>Sign in</span>
+            )}
+          </button>
+        </form>
+      </div>
+    </main>
+  )
+}
