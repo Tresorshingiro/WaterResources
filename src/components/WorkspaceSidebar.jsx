@@ -19,13 +19,14 @@ import { brand } from '../lib/brand'
  *
  * On a single-module portal that flat group is headed by the module itself, so
  * a portal with no named groups still has a heading over its rows, the same as
- * one that has them. Under a multi-module portal it stays unnamed: the module
- * heading is already directly above it.
+ * one that has them — unless the module shares the portal's name, which the
+ * brand directly above already shows. Under a multi-module portal it stays
+ * unnamed: the module heading is already directly above it.
  */
 const groupsOf = (mod, soleModule) =>
   mod.groups || [
     {
-      name: soleModule ? mod.name : null,
+      name: soleModule && mod.name !== portal.name ? mod.name : null,
       icon: mod.icon,
       solutions: mod.solutions.filter((s) => !s.isForm),
     },

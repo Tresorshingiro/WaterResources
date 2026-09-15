@@ -26,10 +26,6 @@ const renderAt = (path = '/') =>
 const group = (mod) => within(screen.getByRole('region', { name: mod.name }))
 const row = (mod, solution) => group(mod).getByRole('link', { name: solution.name })
 
-// Mirrors the component: a portal whose only module is the portal itself shows
-// no module header, because the brand above it already carries that name.
-const soleModule = modules.length === 1 && modules[0].name === portal.name
-
 describe('WorkspaceSidebar', () => {
   it('publishes only solutions that have an embedUrl', () => {
     expect(modules.length).toBeGreaterThan(0)
@@ -51,6 +47,17 @@ describe('WorkspaceSidebar', () => {
     for (const mod of modules) {
       expect(screen.getByRole('region', { name: mod.name })).toBeInTheDocument()
     }
+  })
+
+  it('does not repeat the portal name as a heading under the brand', () => {
+    renderAt()
+    const nav = screen.getByRole('navigation', { name: 'Modules' })
+    const headings = [...nav.querySelectorAll('.navhead__title')].map((el) => el.textContent)
+    expect(headings).not.toContain(portal.name)
+    // The dashboard that shares the name is a row, and it stays.
+    const [mod] = modules
+    const namesake = mod.solutions.find((s) => s.name === portal.name)
+    if (namesake) expect(row(mod, namesake)).toBeInTheDocument()
   })
 
   it('shows no solution counts, since every row is already on screen', () => {
