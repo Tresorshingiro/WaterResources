@@ -354,175 +354,162 @@ a {
 
 /* ---------- sidebar content ---------- */
 
+/*
+ * One sidebar layout for every portal: a brand badge beside the portal's name,
+ * headings with their own icon tile, rows that light up as a filled pill, and
+ * the signed-in user above a Logout row.
+ *
+ * `--brand-accent` (text-grade, 4.5:1 on white) and `--brand-tint` (washes
+ * only) are set on the sidebar by the component from the same values the login
+ * uses, so the colour follows each portal without a per-portal rule. There are
+ * no rails: separation comes from spacing and the heading tiles.
+ */
+.workspace-sidebar {
+  --brand-accent: var(--chrome-accent);
+  --brand-tint: var(--brand-accent);
+  --brand-soft: color-mix(in srgb, var(--brand-tint) 30%, #ffffff);
+  --brand-hover: color-mix(in srgb, var(--brand-tint) 10%, #ffffff);
+  background: #ffffff;
+}
+
 .sidebar__top {
   flex-shrink: 0;
   display: flex;
-  align-items: flex-start;
-  gap: 8px;
-  padding: 14px 12px;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 12px 14px 14px;
   border-bottom: 1px solid var(--chrome-hairline);
 }
 
 .sidebar__brand {
   flex: 1;
   min-width: 0;
-  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+}
+
+.sidebar__badge {
+  flex-shrink: 0;
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border-radius: 11px;
+  color: #ffffff;
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--brand-tint) 70%, var(--brand-accent)),
+    var(--brand-accent)
+  );
+  box-shadow: 0 4px 10px color-mix(in srgb, var(--brand-accent) 24%, transparent);
+}
+.sidebar__badge svg { stroke-width: 2.1; }
+
+.sidebar__name {
+  font-size: 16px;
   font-weight: 700;
-  line-height: 1.3;
-  color: var(--chrome-text);
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  color: var(--brand-accent);
+  text-wrap: balance;
 }
 
 .sidebar__collapse {
-  width: 32px;
-  height: 32px;
+  width: 38px;
+  height: 38px;
   flex-shrink: 0;
   display: grid;
   place-items: center;
-  border-radius: 8px;
+  border-radius: 10px;
   border: 1px solid var(--chrome-hairline);
-  background: transparent;
-  color: var(--chrome-accent);
+  background: #ffffff;
+  color: var(--brand-accent);
+  box-shadow: 0 1px 2px rgba(18, 16, 14, 0.05);
   transition: border-color 0.15s ease, background 0.15s ease;
 }
 .sidebar__collapse:hover {
-  border-color: var(--chrome-accent);
-  background: var(--chrome-raised);
+  border-color: var(--brand-accent);
+  background: var(--brand-hover);
 }
 
-/* Only the module list scrolls; the brand and the account stay put. */
+/* Only the list scrolls; the brand and the account stay put. */
 .sidebar__scroll {
   flex: 1;
   min-height: 0;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  padding: 14px 12px 20px;
+  gap: 22px;
+  padding: 18px 12px 20px;
 }
 
-.sidebar__foot {
+.navsection {
   flex-shrink: 0;
   display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* A heading: its own white tile, then the name in bold. */
+.navhead {
+  display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  padding: 10px 12px;
-  border-top: 1px solid var(--chrome-hairline);
+  gap: 11px;
+  padding: 0 4px 4px;
 }
-
-.sidebar__heading {
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--chrome-dim);
-  margin: 0 8px 4px;
-}
-
-/*
- * A module is a rail, not a card.
- *
- * Six bordered boxes each carrying a filled icon tile, a two-line title and a
- * count put more chrome on screen than the ten links they contained, and the
- * set overflowed the viewport. The grouping is now a 2px rule in the module's
- * own accent, which separates the groups and identifies them at the same time.
- * `--accent` / `--accent-soft` / `--accent-text` come from the component.
- */
-.modgroup {
-  position: relative;
+.navhead__tile {
   flex-shrink: 0;
-  padding-left: 13px;
-}
-
-.modgroup::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 3px;
-  bottom: 3px;
-  width: 2px;
-  border-radius: 2px;
-  background: var(--accent-dark);
-  opacity: 0.6;
-  transition: opacity 0.15s ease;
-}
-.modgroup.is-active::before { opacity: 1; }
-
-/*
- * A grid, not a wrapping flex row.
- *
- * The head carries the module's FULL catalog name, which runs past one line in
- * a 300px rail. Under flex-wrap the count landed wherever the title's last line
- * left off, so it sat mid-row on one module and under the icon on the next. Two
- * columns fix it: the icon holds its own column, and the title and the count
- * stack in the second, both starting on the same left edge.
- */
-.modgroup__head {
+  width: 34px;
+  height: 34px;
   display: grid;
-  grid-template-columns: 16px 1fr;
-  column-gap: 8px;
-  row-gap: 3px;
-  padding: 0 6px 7px;
+  place-items: center;
+  border-radius: 10px;
+  border: 1px solid var(--chrome-hairline);
+  background: #ffffff;
+  color: var(--brand-accent);
+  box-shadow: 0 1px 3px rgba(18, 16, 14, 0.06);
 }
-/* Nudged onto the first line of the title rather than centred on the block. */
-.modgroup__icon { grid-column: 1; margin-top: 2px; color: var(--accent-dark); }
-.modgroup__title {
-  grid-column: 2;
-  font-size: 12px;
+.navhead__title {
+  font-size: 15px;
   font-weight: 700;
-  letter-spacing: 0.05em;
-  line-height: 1.35;
-  text-transform: uppercase;
+  line-height: 1.3;
   color: var(--chrome-text);
-  /* Evens the two lines instead of leaving one word alone on the second. */
   text-wrap: balance;
 }
-.modgroup__count { grid-column: 2; font-size: 12px; color: var(--chrome-dim); }
 
-/*
- * The solutions sit INSIDE their module, and have to look it.
- *
- * Two things flattened the hierarchy. The obvious one was indentation — module
- * title and row label started within a few px of each other. The subtler one is
- * the icons: both columns carry a 16px mark, so at a glance the eye reads one
- * ragged column of icons rather than a parent and its children, and a small
- * indent only makes that column look misaligned instead of nested.
- *
- * So the indent is big enough that the row's ICON begins past where the
- * module's TITLE begins — head pads 6px + 16px icon + 8px gap puts the title at
- * 30px; this pads 26px and .modlist__item another 11px, putting the row icon at
- * 37px. The two columns never interleave, and the offset alone carries the
- * nesting. A guide line down the list was tried and cut: against the group's
- * own accent rail it made two vertical rules per module and the column turned
- * stripey.
- */
+/* A group inside a module, where the module already holds the heading. */
+.navsub {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 2px 8px 6px 14px;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.35;
+  color: var(--chrome-text-2);
+}
+.navsub svg { flex-shrink: 0; margin-top: 1px; color: var(--brand-accent); }
+
 .modlist {
   list-style: none;
   margin: 0;
-  padding: 2px 0 0 26px;
+  padding: 0;
   display: flex;
   flex-direction: column;
-  /* Rows are two and three lines tall now, so 1px no longer reads as a gap. */
   gap: 3px;
 }
+.modlist--nested { padding-left: 10px; }
 
-/*
- * A row is a wrapped label, not a single line.
- *
- * The full application names run to eight words — "Air Quality and Pollution
- * Mapping, Monitoring and Reporting" — and truncating them was the whole
- * problem, so the row grows downwards instead. 14px buys roughly four more
- * characters per line than the 15px it replaces, which is the difference
- * between three lines and two on most of the catalog.
- */
+/* Rows wrap rather than truncate: the full application names are long. */
 .modlist__item {
   display: flex;
   align-items: flex-start;
-  gap: 10px;
-  padding: 9px 11px;
-  border-radius: 7px;
-  font-size: 14px;
-  line-height: 1.4;
+  gap: 12px;
+  padding: 9px 12px;
+  border-radius: 12px;
+  font-size: 15px;
+  line-height: 1.35;
   color: var(--chrome-text-2);
   transition: background 0.15s ease, color 0.15s ease;
 }
@@ -530,20 +517,90 @@ a {
   text-wrap: balance;
   overflow-wrap: break-word;
 }
-
-/* No module head to nest under, so the rows come back off the 26px indent and
-   hand most of it to the labels that made this change necessary. The 8px that
-   stays is what keeps an active row's tinted block from touching the rail. */
-.modgroup.is-sole .modlist { padding-left: 8px; }
-.modlist__item:hover { background: var(--chrome-raised); color: var(--chrome-text); }
+.modlist__item svg { flex-shrink: 0; margin-top: 1px; color: var(--brand-accent); }
+.modlist__item:hover { background: var(--brand-hover); color: var(--chrome-text); }
 .modlist__item.is-active {
-  background: var(--accent-soft);
-  color: var(--accent-dark);
-  font-weight: 600;
+  background: var(--brand-soft);
+  color: var(--chrome-text);
+  font-weight: 700;
 }
-.modlist__item.is-active svg { color: var(--accent-dark); }
-/* Same first-line alignment as the module icon, for the same reason. */
-.modlist__item svg { flex-shrink: 0; margin-top: 2px; }
+
+/*
+ * A dashboard's data collection form sits one step further in and reads
+ * quieter than the dashboard it feeds; it still lights up like any row.
+ */
+.modlist--form {
+  padding: 2px 0 0 30px;
+  gap: 0;
+}
+.modlist__item--form {
+  padding: 6px 10px;
+  font-size: 13px;
+  color: var(--chrome-dim);
+}
+.modlist__item--form svg { margin-top: 2px; }
+
+/* ---------- account ---------- */
+
+.sidebar__foot {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 4px;
+  padding: 12px 12px 14px;
+  border-top: 1px solid var(--chrome-hairline);
+}
+
+.account {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  min-width: 0;
+  padding: 4px;
+}
+.account__avatar {
+  flex-shrink: 0;
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  font-size: 14px;
+  font-weight: 700;
+  color: #ffffff;
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--brand-tint) 70%, var(--brand-accent)),
+    var(--brand-accent)
+  );
+}
+.account__name {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--chrome-text);
+}
+
+.logout {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 8px 6px;
+  border: 0;
+  border-radius: 10px;
+  background: none;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--chrome-text);
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.logout svg { flex-shrink: 0; color: var(--chrome-text-2); }
+.logout:hover { background: var(--brand-hover); color: var(--brand-accent); }
+.logout:hover svg { color: var(--brand-accent); }
 
 /* ---------- welcome pane ---------- */
 
@@ -594,17 +651,21 @@ a {
 /* ---------- login ---------- */
 
 /*
- * The login sits on the chrome, not on paper.
+ * Photograph on the left, a tinted panel with one credential card on the right.
  *
- * Signing in is the same surface as the sidebar it leads to — basalt, with the
- * photograph alongside. On paper the card was a light panel that the workspace
- * then contradicted the instant the user got through it.
+ * Every colour below is derived from two variables LoginPage sets from the
+ * portal's own catalog entry: --login-tint (the module accent) washes the panel
+ * and the inputs, --login-accent (the contrast-guarded accentText) carries the
+ * title, the badge, the focus ring and the button. So each split portal gets
+ * the same page in its own colour without a per-portal rule.
  */
 .login {
+  --login-accent: var(--chrome-accent);
+  --login-tint: var(--login-accent);
   min-height: 100dvh;
   display: grid;
   grid-template-columns: 1.15fr 0.85fr;
-  background: var(--chrome);
+  background: color-mix(in srgb, var(--login-tint) 20%, #ffffff);
 }
 
 .login-visual {
@@ -614,76 +675,55 @@ a {
   overflow: hidden;
 }
 
-.login-visual .contours { --contour-ink: rgba(255, 255, 255, 0.11); }
-
-.login-visual__scrim {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    180deg,
-    rgba(10, 20, 14, 0.35),
-    rgba(10, 20, 14, 0.3) 40%,
-    rgba(10, 20, 14, 0.88)
-  );
-}
-
-.login-visual__brand {
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  z-index: 2;
-  padding: 48px 44px;
-  max-width: 34rem;
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-  align-items: flex-start;
-}
-
-.login-visual__title {
-  margin: 0;
-  font-size: clamp(1.7rem, 3.4vw, 2.7rem);
-  font-weight: 700;
-  line-height: 1.1;
-  letter-spacing: -0.03em;
-  color: #ffffff;
-  text-shadow: 0 2px 18px rgba(10, 20, 14, 0.7);
-}
-
 .login-panel {
   display: grid;
   place-items: center;
-  padding: 24px;
+  padding: 32px 24px;
 }
 
 .login-card {
   width: 100%;
-  max-width: 440px;
+  max-width: 460px;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 14px;
-  padding: 28px 24px;
-  border-radius: 12px;
-  border: 1px solid var(--chrome-hairline);
-  background: var(--surface);
-  box-shadow: 0 1px 2px rgba(18, 16, 14, 0.04), 0 12px 32px rgba(18, 16, 14, 0.06);
+  padding: 30px 26px;
+  border-radius: 16px;
+  border: 1px solid color-mix(in srgb, var(--login-tint) 35%, #ffffff);
+  background: #ffffff;
+  box-shadow:
+    0 1px 2px rgba(18, 16, 14, 0.04),
+    0 18px 40px color-mix(in srgb, var(--login-accent) 16%, transparent);
 }
 
+.login-card__badge {
+  display: grid;
+  place-items: center;
+  width: 54px;
+  height: 54px;
+  border-radius: 10px;
+  color: #ffffff;
+  background: var(--login-accent);
+}
+.login-card__badge svg { stroke-width: 2.2; }
+
 .login-card__title {
-  font-size: clamp(1.35rem, 3vw, 1.85rem);
+  margin: 2px 0 6px;
+  font-size: clamp(1.45rem, 2.6vw, 1.95rem);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
   text-align: center;
-  margin: 0 0 6px;
-  /* Solid, not the gradient the wrapped product name used: across two short
-     words a left-to-right ramp just looks like "in" is a different colour. */
-  color: var(--chrome-text);
+  text-wrap: balance;
+  color: var(--login-accent);
 }
 
 .field { width: 100%; display: flex; flex-direction: column; gap: 6px; }
 
 .field label {
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--chrome-text-2);
 }
 
@@ -691,17 +731,17 @@ a {
   width: 100%;
   min-height: 48px;
   padding: 0 14px;
-  border-radius: 10px;
-  border: 1px solid var(--chrome-hairline);
-  background: var(--surface);
+  border-radius: 8px;
+  border: 1.5px solid color-mix(in srgb, var(--login-tint) 50%, #ffffff);
+  background: color-mix(in srgb, var(--login-tint) 5%, #ffffff);
   color: var(--chrome-text);
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 .field input::placeholder { color: var(--chrome-dim); }
 .field input:focus {
   outline: none;
-  border-color: var(--chrome-accent);
-  box-shadow: 0 0 0 3px rgba(164, 95, 51, 0.18);
+  border-color: var(--login-accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--login-tint) 22%, transparent);
 }
 .field input:disabled { opacity: 0.6; }
 
@@ -710,6 +750,28 @@ a {
   margin: 0;
   font-size: 13px;
   color: var(--chrome-danger);
+}
+
+.login-card__submit {
+  width: 100%;
+  margin-top: 8px;
+  min-height: 44px;
+  border-radius: 8px;
+  background: linear-gradient(
+    90deg,
+    var(--login-accent),
+    color-mix(in srgb, var(--login-accent) 80%, #000000)
+  );
+  box-shadow: 0 6px 16px color-mix(in srgb, var(--login-accent) 22%, transparent);
+  transition: filter 0.15s ease;
+}
+.login-card__submit:hover:not(:disabled) {
+  background: linear-gradient(
+    90deg,
+    var(--login-accent),
+    color-mix(in srgb, var(--login-accent) 80%, #000000)
+  );
+  filter: brightness(0.94);
 }
 
 /* ---------- legal ---------- */
@@ -804,9 +866,7 @@ a {
   .login {
     grid-template-columns: 1fr;
   }
-  .login-visual { min-height: 240px; }
-  .login-visual__brand { padding: 24px 22px; gap: 12px; }
-  .login-visual__title { font-size: clamp(1.25rem, 5vw, 1.6rem); }
+  .login-visual { min-height: 180px; }
 
   /* Overlay drawer. Never width-0 here — it slides instead. */
   .workspace-sidebar {

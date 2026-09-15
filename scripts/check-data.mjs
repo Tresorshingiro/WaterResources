@@ -6,11 +6,12 @@ import { fileURLToPath } from 'node:url'
 import { modules, totals } from '../src/data/modules.js'
 import { manifest } from '../src/config/image-manifest.js'
 
-const EXPECTED = { modules: 1, apps: 2, features: 8 }
+const EXPECTED = { modules: 1, apps: 3, features: 8 }
 
-// Per-module expected counts, transcribed from the source spreadsheet.
+// Per-module expected counts, transcribed from the source spreadsheet, plus
+// Water Quality Analytics, added to the portal after the spreadsheet.
 const PER_MODULE = {
-  water: { apps: 2, features: 8 },
+  water: { apps: 3, features: 8 },
 }
 const GROUND = '#FBFAF7'
 const failures = []

@@ -36,8 +36,9 @@ export const portal = {
  * repoint a link, and so a reorder cannot change a URL.
  */
 const SOLUTION_IDS = {
-  "https://gh.space.gov.rw/portal/apps/experiencebuilder/experience/?id=456bc830d1ba4d26801607f3c1be44f3": "water-resources",
+  "https://gh.space.gov.rw/portal/apps/experiencebuilder/experience/?id=fd3e190aa14c4c8c82611b7acd72b997&draft=true": "water-resources",
   "https://gh.space.gov.rw/portal/apps/experiencebuilder/experience/?id=91de3570e4074737b251b3c23b3928d5": "water-quality",
+  "https://gh.space.gov.rw/portal/apps/experiencebuilder/experience/?id=4f89698380e2414bbb7fdfa264833ca5": "water-quality-analytics",
 }
 
 const MODULE_ICONS = {
@@ -47,6 +48,7 @@ const MODULE_ICONS = {
 const SOLUTION_ICONS = {
   "water-resources": "layers",
   "water-quality": "activity",
+  "water-quality-analytics": "barChart",
 }
 
 /*

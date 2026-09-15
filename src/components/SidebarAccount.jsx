@@ -1,4 +1,5 @@
 import { useAuth } from '../auth/AuthContext'
+import IconMark from './IconMark'
 
 /**
  * Who is signed in, and the way out. Pinned to the foot of the sidebar.
@@ -8,12 +9,23 @@ import { useAuth } from '../auth/AuthContext'
  */
 export default function SidebarAccount() {
   const { user, signOut } = useAuth()
+  const name = user?.fullName || user?.username || ''
 
   return (
     <div className="sidebar__foot">
-      <span className="userpill">{user?.fullName || user?.username}</span>
-      <button type="button" className="linkbtn" onClick={signOut}>
-        Sign out
+      {name && (
+        <div className="account">
+          <span className="account__avatar" aria-hidden="true">
+            {name.trim().charAt(0).toUpperCase()}
+          </span>
+          <span className="account__name" title={name}>
+            {name}
+          </span>
+        </div>
+      )}
+      <button type="button" className="logout" onClick={signOut}>
+        <IconMark name="logout" size={20} />
+        <span>Logout</span>
       </button>
     </div>
   )

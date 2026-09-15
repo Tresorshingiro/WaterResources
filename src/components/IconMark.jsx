@@ -39,6 +39,7 @@ const PATHS = {
     </>
   ),
   activity: <path d="M3 12h4l3 7 4-15 3 8h4" />,
+  barChart: <path d="M4 20h16M7 16v-5M12 16V7M17 16v-8" />,
   chevron: <path d="m6 9 6 6 6-6" />,
   panelLeft: (
     <>
@@ -59,6 +60,12 @@ const PATHS = {
     </>
   ),
   arrowLeft: <path d="M19 12H5m6-7-7 7 7 7" />,
+  logout: (
+    <>
+      <path d="M15 4h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-3" />
+      <path d="M10 17l-5-5 5-5M5 12h11" />
+    </>
+  ),
 }
 
 export default function IconMark({ name, size = 16, className = '', title }) {

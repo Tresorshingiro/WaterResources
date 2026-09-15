@@ -91,11 +91,26 @@ function serveStatic(req, res) {
 
   const ext = path.extname(target)
   res.setHeader('Content-Type', TYPES[ext] || 'application/octet-stream')
-  // Hashed assets are immutable; the entry HTML must never be cached.
-  res.setHeader(
-    'Cache-Control',
-    target.endsWith('index.html') ? 'no-cache' : 'public, max-age=31536000, immutable',
-  )
+  /*
+   * Only Vite's hashed build output under dist/assets is immutable: a changed
+   * file gets a new name. Everything copied from public/ — the photographs, the
+   * fonts — keeps its name when its content changes, so marking it immutable
+   * left browsers showing a replaced hero photo for up to a year. Those, and
+   * the entry HTML, revalidate instead; an unchanged file costs a bodiless 304.
+   */
+  if (target.startsWith(path.join(DIST, 'assets') + path.sep)) {
+    res.setHeader('Cache-Control', 'public, max-age=31536000, immutable')
+  } else {
+    const modified = fs.statSync(target).mtime
+    modified.setMilliseconds(0) // HTTP dates carry whole seconds only
+    res.setHeader('Cache-Control', 'no-cache')
+    res.setHeader('Last-Modified', modified.toUTCString())
+    const since = Date.parse(req.headers['if-modified-since'] || '')
+    if (!Number.isNaN(since) && modified.getTime() <= since) {
+      res.statusCode = 304
+      return res.end()
+    }
+  }
   fs.createReadStream(target).pipe(res)
 }
 

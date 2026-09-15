@@ -1,7 +1,9 @@
 import { useState } from 'react'
 import { Navigate, useNavigate, useSearchParams } from 'react-router-dom'
 import { useAuth } from './AuthContext'
+import IconMark from '../components/IconMark'
 import { portal } from '../data/config'
+import { brand } from '../lib/brand'
 
 export default function LoginPage() {
   const { user, checking, signIn } = useAuth()
@@ -36,18 +38,27 @@ export default function LoginPage() {
   }
 
   return (
-    <main className="login">
-      <div className="login-visual" style={{ backgroundImage: `url(${portal.hero})` }}>
-        <div className="login-visual__scrim" />
-        <div className="contours" aria-hidden="true" />
-        <div className="login-visual__brand">
-          <p className="login-visual__title">{portal.name}</p>
-        </div>
-      </div>
+    <main
+      className="login"
+      style={{
+        '--login-accent': brand.accent,
+        '--login-tint': brand.tint,
+      }}
+    >
+      {/* Photograph only, shown as it is. The portal's name is the card's
+          heading, so setting it over the photo as well would say it twice. */}
+      <div
+        className="login-visual"
+        style={{ backgroundImage: `url(${portal.hero})` }}
+        aria-hidden="true"
+      />
 
       <div className="login-panel">
         <form className="login-card" onSubmit={onSubmit} noValidate>
-          <h1 className="login-card__title">Sign in</h1>
+          <span className="login-card__badge" aria-hidden="true">
+            <IconMark name={brand.icon} size={32} />
+          </span>
+          <h1 className="login-card__title">{portal.name}</h1>
 
           <div className="field">
             <label htmlFor="username">Username</label>
@@ -61,6 +72,7 @@ export default function LoginPage() {
               /* eslint-disable-next-line jsx-a11y/no-autofocus */
               autoFocus
               disabled={busy}
+              placeholder="Username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
             />
@@ -86,7 +98,7 @@ export default function LoginPage() {
             </p>
           )}
 
-          <button type="submit" className="btn-primary" disabled={busy}>
+          <button type="submit" className="btn-primary login-card__submit" disabled={busy}>
             {busy ? (
               <>
                 <span className="btn-spinner" aria-hidden="true" />
