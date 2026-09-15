@@ -32,11 +32,6 @@ export const modules = [
         url: "https://gh.space.gov.rw/portal/apps/experiencebuilder/experience/?id=91de3570e4074737b251b3c23b3928d5",
         year: "Year 2",
       },
-      {
-        name: "Water Quality Analytics",
-        url: "https://gh.space.gov.rw/portal/apps/experiencebuilder/experience/?id=4f89698380e2414bbb7fdfa264833ca5",
-        year: "Year 2",
-      },
     ],
     features: features.water,
   },
