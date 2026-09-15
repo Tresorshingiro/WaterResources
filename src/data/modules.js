@@ -29,7 +29,7 @@ export const modules = [
         // Formerly "Water Resources Quality Monitoring". Its route id is keyed
         // by URL in config.js, so the rename leaves existing links working.
         name: "Water Quality Dashboard",
-        url: "https://gh.space.gov.rw/portal/apps/experiencebuilder/experience/?id=91de3570e4074737b251b3c23b3928d5",
+        url: "https://gh.space.gov.rw/portal/apps/dashboards/6852d1be70fd4c93a8b51f058a952da3",
         year: "Year 2",
       },
     ],
