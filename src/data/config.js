@@ -37,7 +37,7 @@ export const portal = {
  */
 const SOLUTION_IDS = {
   "https://gh.space.gov.rw/portal/apps/experiencebuilder/experience/?id=fd3e190aa14c4c8c82611b7acd72b997&draft=true": "water-resources",
-  "https://gh.space.gov.rw/portal/apps/experiencebuilder/experience/?id=91de3570e4074737b251b3c23b3928d5": "water-quality",
+  "https://gh.space.gov.rw/portal/apps/dashboards/6852d1be70fd4c93a8b51f058a952da3": "water-quality",
 }
 
 const MODULE_ICONS = {
