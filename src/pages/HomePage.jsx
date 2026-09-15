@@ -1,21 +1,26 @@
-import { portal } from '../data/config'
+import { Navigate } from 'react-router-dom'
+import { modules } from '../data/config'
+
+/*
+ * There is no welcome page: signing in lands straight on the first dashboard
+ * in the sidebar.
+ *
+ * Walked in the sidebar's own order — each module's groups, or its flat list
+ * with the data collection forms left out — so "first" is the top row the user
+ * sees. Only a solution with an embedUrl qualifies: AppViewer sends anything
+ * else back here, which would loop.
+ */
+function firstDashboardPath() {
+  for (const mod of modules) {
+    const solutions = mod.groups ? mod.groups.flatMap((g) => g.solutions) : mod.solutions
+    const first = solutions.find((s) => !s.isForm && s.embedUrl)
+    if (first) return `/module/${mod.id}/app/${first.id}`
+  }
+  return null
+}
 
 export default function HomePage() {
-  return (
-    <section
-      className="welcome"
-      style={{ backgroundImage: `url(${portal.hero})` }}
-      aria-label="Welcome"
-    >
-      <div className="welcome__scrim" />
-      <div className="contours" aria-hidden="true" />
-      <div className="welcome__body">
-        <h1 className="welcome__title">{portal.homeTitle}</h1>
-        <p className="welcome__tagline">{portal.tagline}</p>
-        <p className="welcome__hint">
-          Open a module on the left, then choose a solution. It will load in this pane.
-        </p>
-      </div>
-    </section>
-  )
+  const path = firstDashboardPath()
+  // Only an empty catalog gets here; the pane simply stays blank.
+  return path ? <Navigate to={path} replace /> : null
 }
