@@ -2,29 +2,21 @@ import { useAuth } from '../auth/AuthContext'
 import IconMark from './IconMark'
 
 /**
- * Who is signed in, and the way out. Pinned to the foot of the sidebar.
+ * The way out, pinned to the foot of the sidebar.
+ *
+ * The signed-in user's name is deliberately not shown: the sibling portals'
+ * foot carries Logout alone, and this one matches them.
  *
  * Its own component so the sidebar's module list stays testable without an
  * auth provider standing behind it.
  */
 export default function SidebarAccount() {
-  const { user, signOut } = useAuth()
-  const name = user?.fullName || user?.username || ''
+  const { signOut } = useAuth()
 
   return (
     <div className="sidebar__foot">
-      {name && (
-        <div className="account">
-          <span className="account__avatar" aria-hidden="true">
-            {name.trim().charAt(0).toUpperCase()}
-          </span>
-          <span className="account__name" title={name}>
-            {name}
-          </span>
-        </div>
-      )}
       <button type="button" className="logout" onClick={signOut}>
-        <IconMark name="logout" size={20} />
+        <IconMark name="logout" size={16} />
         <span>Logout</span>
       </button>
     </div>

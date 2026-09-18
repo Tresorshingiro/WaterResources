@@ -11,7 +11,7 @@ import { brand } from '../lib/brand'
  * The portals' catalogs come in three shapes — a flat list of solutions, named
  * groups of dashboards, and dashboards with a data collection form under each —
  * and one portal carries several modules. This walks all of them the same way,
- * so every portal draws the same header, headings, rows and account foot.
+ * so every portal draws the same header, headings, rows and Logout foot.
  */
 
 /*
@@ -53,7 +53,7 @@ export default function WorkspaceSidebar() {
         to={`/module/${mod.id}/app/${solution.id}`}
         className={`modlist__item ${activeSolutionId === solution.id ? 'is-active' : ''}`}
       >
-        <IconMark name={solution.icon} size={18} />
+        <IconMark name={solution.icon} size={16} />
         <span>{solution.name}</span>
       </NavLink>
 
@@ -71,7 +71,7 @@ export default function WorkspaceSidebar() {
                 activeSolutionId === solution.form.id ? 'is-active' : ''
               }`}
             >
-              <IconMark name={solution.form.icon} size={15} />
+              <IconMark name={solution.form.icon} size={16} />
               <span>{solution.form.name}</span>
             </NavLink>
           </li>
@@ -90,7 +90,7 @@ export default function WorkspaceSidebar() {
       <div className="sidebar__top">
         <NavLink to="/" className="sidebar__brand">
           <span className="sidebar__badge" aria-hidden="true">
-            <IconMark name={brand.icon} size={22} />
+            <IconMark name={brand.icon} size={18} />
           </span>
           <span className="sidebar__name">{portal.name}</span>
         </NavLink>
@@ -100,7 +100,7 @@ export default function WorkspaceSidebar() {
           onClick={toggle}
           aria-label="Collapse modules menu"
         >
-          <IconMark name="panelLeftClose" size={18} />
+          <IconMark name="panelLeftClose" size={16} />
         </button>
       </div>
 
@@ -110,7 +110,7 @@ export default function WorkspaceSidebar() {
             {!soleModule && (
               <div className="navhead">
                 <span className="navhead__tile" aria-hidden="true">
-                  <IconMark name={mod.icon} size={18} />
+                  <IconMark name={mod.icon} size={16} />
                 </span>
                 <span className="navhead__title">{mod.name}</span>
               </div>
@@ -125,13 +125,13 @@ export default function WorkspaceSidebar() {
                     (soleModule ? (
                       <div className="navhead" id={headingId}>
                         <span className="navhead__tile" aria-hidden="true">
-                          <IconMark name={group.icon} size={18} />
+                          <IconMark name={group.icon} size={16} />
                         </span>
                         <span className="navhead__title">{group.name}</span>
                       </div>
                     ) : (
                       <div className="navsub" id={headingId}>
-                        <IconMark name={group.icon} size={15} />
+                        <IconMark name={group.icon} size={16} />
                         <span>{group.name}</span>
                       </div>
                     ))}

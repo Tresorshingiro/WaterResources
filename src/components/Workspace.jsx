@@ -38,7 +38,7 @@ export default function Workspace() {
           onClick={toggle}
           aria-label="Open modules menu"
         >
-          <IconMark name="panelLeft" size={18} />
+          <IconMark name="panelLeft" size={16} />
         </button>
       )}
 
